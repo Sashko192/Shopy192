@@ -142,51 +142,42 @@
 </div>
 
 <style>
-  .banner__media--three-images {
+ .banner__media--three-images {
   display: flex;
-  gap: 16px; /* простір між лівою і правою частиною */
+  gap: 0; /* без відстані між лівою і правою частинами */
 }
 
 .banner__media-left {
   width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .banner__media-left img {
   width: 100%;
-  height: auto; /* зберігає пропорції */
-  object-fit: cover; /* красиво обрізає, якщо потрібно */
-  border-radius: 8px; /* трохи закруглені краї */
+  height: 100%;
+  object-fit: cover; /* зберігає пропорції і обрізає зайве */
 }
 
 .banner__media-right {
   width: 50%;
   display: flex;
-  flex-direction: row;
-  gap: 16px; /* простір між двома правими картинками */
+  flex-direction: column; /* дві картинки одна під одною */
 }
 
 .banner__media-right-half {
-  width: 50%; /* кожна займає половину правої половини */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%; /* повна ширина правого блоку */
+  flex: 1; /* займає половину висоти правого блоку */
 }
 
 .banner__media-right-half img {
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 8px;
+  height: 100%;
+  object-fit: cover; /* не деформуються */
 }
 
 /* Адаптив для мобільних екранів */
 @media screen and (max-width: 749px) {
   .banner__media--three-images {
     flex-direction: column;
-    gap: 12px;
   }
 
   .banner__media-left,
@@ -195,11 +186,12 @@
   }
 
   .banner__media-right {
-    flex-direction: row; /* якщо хочеш залишити дві картинки в ряд на мобільних, можна залишити */
+    flex-direction: row; /* або залишити column, якщо хочеш дві картинки в ряд на мобільних */
   }
 
   .banner__media-right-half {
-    width: 50%;
+    height: auto;
+    flex: none;
   }
 }
 
