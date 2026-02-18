@@ -36,7 +36,9 @@
 
 
 <div class="best-sellers">
-  {% if section.settings.collection != blank %}
+   {% if section.settings.collection != blank %}
+    <!-- Заголовок секції -->
+    <h2 class="best-sellers-heading">Best Sellers</h2>
     {% assign products = section.settings.collection.products | limit: 4 %}
     <div class="grid grid--4">
       {% for product in products %}
@@ -56,6 +58,14 @@
   {% endif %}
 </div>
 <style>
+.best-sellers-heading {
+  color: {{ section.settings.collection_title_color }};
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px; /* відступ від сітки товарів */
+}
+
 .best-sellers .grid {
   display: flex;
   flex-wrap: wrap;
