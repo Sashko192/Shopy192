@@ -75,7 +75,7 @@
 
     <div class="banner__media-right">
       {%- if section.settings.image_2 != blank -%}
-        <div class="banner__media-half">
+        <div class="banner__media-right-half">
           {%- assign image_height_2 = section.settings.image_2.width | divided_by: section.settings.image_2.aspect_ratio -%}
           {{
             section.settings.image_2
@@ -92,7 +92,7 @@
       {%- endif -%}
 
       {%- if section.settings.image_3 != blank -%}
-        <div class="banner__media-half">
+        <div class="banner__media-right-half">
           {%- assign image_height_3 = section.settings.image_3.width | divided_by: section.settings.image_3.aspect_ratio -%}
           {{
             section.settings.image_3
@@ -152,13 +152,13 @@
   .banner__media-right {
     width: 50%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* тепер зображення в ряд */
   }
-  .banner__media-half {
-    width: 100%;
-    flex: 1;
+  .banner__media-right-half {
+    width: 50%; /* половина правої половини = 25% від банера */
   }
 </style>
+
 
 
 {% schema %}
