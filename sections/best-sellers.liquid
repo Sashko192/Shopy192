@@ -1,0 +1,119 @@
+{% schema %}
+{
+  "name": "Best Sellers",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select collection"
+    },
+    {
+      "type": "color",
+      "id": "collection_title_color",
+      "label": "Collection title color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#ff0000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers"
+    }
+  ]
+}
+{% endschema %}
+
+
+<div class="best-sellers">
+   {% if section.settings.collection != blank %}
+    <!-- Заголовок секції -->
+    <h2 class="best-sellers-heading">Best Sellers</h2>
+    {% assign products = section.settings.collection.products | limit: 4 %}
+    <div class="grid grid--4">
+      {% for product in products %}
+        <div class="product-card">
+          <a href="{{ product.url }}">
+            <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}">
+          </a>
+          <h3 class="collection-title">{{ section.settings.collection.title }}</h3>
+          <h4 class="product-title">{{ product.title }}</h4>
+          <p class="product-price">{{ product.price | money }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="collection-link">
+      <a href="{{ section.settings.collection.url }}">Подивитись колекцію</a>
+    </div>
+  {% endif %}
+</div>
+<style>
+.best-sellers-heading {
+  color: {{ section.settings.collection_title_color }};
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px; /* відступ від сітки товарів */
+}
+
+.best-sellers .grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* вирівнювання по центру */
+  padding: 0 20px; /* відступи зліва і справа від сторінки */
+}
+
+.best-sellers .grid--4 .product-card {
+  width: calc(22% - 15px); /* трохи менше по ширині, щоб з’явився простір */
+  box-sizing: border-box;
+}
+
+@media (max-width: 749px) {
+  .best-sellers .grid--4 .product-card {
+    width: 100%; /* мобайл — вертикально */
+  }
+}
+
+.product-card img {
+  width: auto;   /* ширина автоматично, щоб не розтягувалось */
+  max-width: 100%; 
+  height: 300px; /* збільшуємо висоту */
+  object-fit: cover; /* обрізаємо фото красиво, без деформації */
+  display: block;
+  margin: 0 auto; /* центр зображення в картці */
+}
+
+.product-card h3.collection-title {
+  color: {{ section.settings.collection_title_color }};
+}
+
+.product-card h4.product-title {
+  color: {{ section.settings.product_title_color }};
+}
+
+.product-card p.product-price {
+  color: {{ section.settings.price_color }};
+}
+
+
+
+.collection-link {
+  text-align: center;
+  margin-top: 20px;
+}
+.collection-link a {
+  color: {{ section.settings.collection_title_color }};
+}
+
+</style>
