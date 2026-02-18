@@ -59,7 +59,10 @@
       "type": "best-sellers",
       "name": "Best ",
       "settings": {
-        "collection": "best-seller"
+        "collection": "best-seller",
+        "collection_title_color": "#1f727c",
+        "product_title_color": "#222222",
+        "price_color": "#ff0000"
       }
     }
   },
