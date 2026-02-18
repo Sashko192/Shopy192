@@ -142,9 +142,9 @@
 </div>
 
 <style>
- .banner__media--three-images {
+.banner__media--three-images {
   display: flex;
-  gap: 0; /* без відстані між лівою і правою частинами */
+  gap: 0;
 }
 
 .banner__media-left {
@@ -154,24 +154,25 @@
 .banner__media-left img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* зберігає пропорції і обрізає зайве */
+  object-fit: cover;
 }
 
 .banner__media-right {
   width: 50%;
   display: flex;
-  flex-direction: column; /* дві картинки одна під одною */
+  flex-direction: column;
 }
 
+/* Правий блок завжди рівний висоті лівого */
 .banner__media-right-half {
-  width: 100%; /* повна ширина правого блоку */
-  flex: 1; /* займає половину висоти правого блоку */
+  width: 100%;
+  height: 50%; /* половина висоти правого блоку */
 }
 
 .banner__media-right-half img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* не деформуються */
+  object-fit: cover;
 }
 
 /* Адаптив для мобільних екранів */
@@ -186,12 +187,11 @@
   }
 
   .banner__media-right {
-    flex-direction: row; /* або залишити column, якщо хочеш дві картинки в ряд на мобільних */
+    flex-direction: row; /* дві картинки в ряд на мобільних, якщо треба */
   }
 
   .banner__media-right-half {
     height: auto;
-    flex: none;
   }
 }
 
