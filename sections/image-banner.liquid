@@ -143,20 +143,66 @@
 
 <style>
   .banner__media--three-images {
-    display: flex;
-    gap: 0px;
+  display: flex;
+  gap: 16px; /* простір між лівою і правою частиною */
+}
+
+.banner__media-left {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner__media-left img {
+  width: 100%;
+  height: auto; /* зберігає пропорції */
+  object-fit: cover; /* красиво обрізає, якщо потрібно */
+  border-radius: 8px; /* трохи закруглені краї */
+}
+
+.banner__media-right {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  gap: 16px; /* простір між двома правими картинками */
+}
+
+.banner__media-right-half {
+  width: 50%; /* кожна займає половину правої половини */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner__media-right-half img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Адаптив для мобільних екранів */
+@media screen and (max-width: 749px) {
+  .banner__media--three-images {
+    flex-direction: column;
+    gap: 12px;
   }
-  .banner__media-left {
-    width: 50%;
-  }
+
+  .banner__media-left,
   .banner__media-right {
-    width: 50%;
-    display: flex;
-    flex-direction: row; /* тепер зображення в ряд */
+    width: 100%;
   }
+
+  .banner__media-right {
+    flex-direction: row; /* якщо хочеш залишити дві картинки в ряд на мобільних, можна залишити */
+  }
+
   .banner__media-right-half {
-    width: 50%; /* половина правої половини = 25% від банера */
+    width: 50%;
   }
+}
+
 </style>
 
 
