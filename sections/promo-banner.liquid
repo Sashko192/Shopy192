@@ -27,6 +27,7 @@
   ]
 }
 {% endschema %}
+
 <div class="promo-banner" {% if section.settings.background_image %}style="background-image: url('{{ section.settings.background_image | image_url: width: 2000 }}');"{% endif %}>
   
   <div class="promo-left">
@@ -40,17 +41,17 @@
 </div>
 
 <style>
+/* Основний банер */
 .promo-banner {
   width: 100%;
   height: 250px;
-  background-size: cover;
-  background-position: center;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  color: white;
   box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
 }
 
 /* Лівий контейнер */
@@ -63,7 +64,7 @@
   text-align: right;
 }
 
-/* Heading */
+/* Heading текст */
 .promo-heading {
   font-family: var(--font-heading-family);
   font-size: 32px;
@@ -71,6 +72,7 @@
   color: #ffffff;
 }
 
+/* Таймер */
 .countdown {
   display: flex;
   align-items: center;
@@ -87,6 +89,7 @@
 .time-number {
   font-size: 28px;
   font-weight: 600;
+  color: white;
 }
 
 .time-label {
@@ -94,12 +97,50 @@
   margin-top: 4px;
   opacity: 0.8;
   text-transform: uppercase;
+  color: white;
 }
 
 .time-separator {
   font-size: 26px;
   font-weight: 600;
   margin: 0 4px;
+  color: white;
+}
+
+/* Адаптив для мобільних */
+@media (max-width: 749px) {
+  .promo-banner {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: auto;
+    padding: 20px;
+  }
+
+  .promo-left {
+    margin-bottom: 10px;
+  }
+
+  .promo-heading {
+    font-size: 20px;
+  }
+
+  .countdown {
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .time-number {
+    font-size: 20px;
+  }
+
+  .time-label {
+    font-size: 10px;
+  }
+
+  .time-separator {
+    font-size: 20px;
+  }
 }
 </style>
 
