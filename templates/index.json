@@ -44,21 +44,11 @@
         "background_image": "shopify://shop_images/generate-background-in-this-color-1f727c.png",
         "sale_end": "2026-02-25T23:59:59"
       }
-    },
-    "new_arrived_CLBT4W": {
-      "type": "new-arrived",
-      "name": "New Arrived",
-      "settings": {
-        "new_collection": "new-arrived",
-        "limit": 4,
-        "enable_slider": true
-      }
     }
   },
   "order": [
     "image_banner",
     "best_sellers_XiDFWR",
-    "promo_banner_iyfdpc",
-    "new_arrived_CLBT4W"
+    "promo_banner_iyfdpc"
   ]
 }
