@@ -1,0 +1,112 @@
+{% schema %}
+{
+  "name": "New Arrived",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "new_collection",
+      "label": "Select collection"
+    },
+    {
+      "type": "number",
+      "id": "limit",
+      "label": "Number of products to show",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable mobile slider",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrived"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="new-arrived">
+  {% if section.settings.new_collection != blank %}
+    {% assign products = section.settings.new_collection.products | limit: section.settings.limit %}
+
+    <div class="grid-wrapper {% if section.settings.enable_slider %}slider-enabled{% endif %}">
+      {% for product in products %}
+        <div class="product-card">
+          <a href="{{ product.url }}">
+            <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}">
+          </a>
+          <h4 class="product-title">{{ product.title }}</h4>
+          <p class="product-price">{{ product.price | money }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.new-arrived .grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+@media (max-width: 749px) {
+  .new-arrived .grid-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .new-arrived .grid-wrapper.slider-enabled {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .new-arrived .grid-wrapper.slider-enabled .product-card {
+    flex: 0 0 70%;
+    margin-right: 10px;
+    scroll-snap-align: start;
+  }
+
+  .new-arrived .grid-wrapper.slider-enabled::-webkit-scrollbar {
+    display: none;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const sliders = document.querySelectorAll(".new-arrived .grid-wrapper.slider-enabled");
+
+  sliders.forEach(slider => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener("mousedown", (e) => {
+      isDown = true;
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener("mouseleave", () => { isDown = false; });
+    slider.addEventListener("mouseup", () => { isDown = false; });
+    slider.addEventListener("mousemove", (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2;
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  });
+});
+</script>
