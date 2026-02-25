@@ -27,12 +27,16 @@
   ]
 }
 {% endschema %}
-
 <div class="promo-banner" {% if section.settings.background_image %}style="background-image: url('{{ section.settings.background_image | image_url: width: 2000 }}');"{% endif %}>
-  <div class="promo-content">
-    <h2>{{ section.settings.banner_text }}</h2>
+  
+  <div class="promo-left">
+    <h2 class="promo-heading">{{ section.settings.banner_text }}</h2>
+  </div>
+
+  <div class="promo-right">
     <div class="countdown" data-endtime="{{ section.settings.sale_end }}"></div>
   </div>
+
 </div>
 
 <style>
@@ -42,27 +46,60 @@
   background-size: cover;
   background-position: center;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 60px;
   color: white;
-  text-align: center;
-  position: relative;
+  box-sizing: border-box;
 }
 
-.promo-content {
-  background: rgba(0,0,0,0.5);
-  padding: 20px 40px;
-  border-radius: 10px;
+/* Лівий контейнер */
+.promo-left {
+  text-align: left;
 }
 
-.promo-content h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
+/* Правий контейнер */
+.promo-right {
+  text-align: right;
+}
+
+/* Heading */
+.promo-heading {
+  font-family: var(--font-heading-family);
+  font-size: 32px;
+  margin: 0;
+  color: #ffffff;
 }
 
 .countdown {
-  font-size: 20px;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body-family);
+}
+
+.time-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-number {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.time-label {
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.time-separator {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 4px;
 }
 </style>
 
@@ -85,7 +122,27 @@ function startCountdown(element) {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    element.innerHTML = `
+      <div class="time-block">
+        <span class="time-number">${days}</span>
+        <span class="time-label">Days</span>
+      </div>
+      <span class="time-separator">:</span>
+      <div class="time-block">
+        <span class="time-number">${hours}</span>
+        <span class="time-label">Hours</span>
+      </div>
+      <span class="time-separator">:</span>
+      <div class="time-block">
+        <span class="time-number">${minutes}</span>
+        <span class="time-label">Minutes</span>
+      </div>
+      <span class="time-separator">:</span>
+      <div class="time-block">
+        <span class="time-number">${seconds}</span>
+        <span class="time-label">Seconds</span>
+      </div>
+    `;
   }
 
   updateTimer();

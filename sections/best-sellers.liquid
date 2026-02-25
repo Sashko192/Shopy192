@@ -115,7 +115,7 @@
 
     <div class="collection-link">
       <a href="{{ section.settings.collection.url }}">
-        Подивитись колекцію
+        View Collection
       </a>
     </div>
 
@@ -161,14 +161,17 @@
 
 .product-card h3.collection-title {
   color: {{ section.settings.collection_title_color }};
+   font-family: var(--font-body-family);
 }
 
 .product-card h4.product-title {
   color: {{ section.settings.product_title_color }};
+  font-family: var(--font-heading-family);
 }
 
 .product-card p.product-price {
   color: {{ section.settings.price_color }};
+   font-family: var(--font-body-family);
 }
 
 .color-variants {
