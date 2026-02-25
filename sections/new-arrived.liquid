@@ -66,6 +66,34 @@
           <!-- Ціна -->
           <p class="product-price">{{ product.price | money }}</p>
 
+          <!-- Кольори під ціною -->
+          {% assign color_option_index = nil %}
+          {% for option in product.options %}
+            {% if option contains 'Color' or option contains 'Colour' or option contains 'Колір' %}
+              {% assign color_option_index = forloop.index0 %}
+            {% endif %}
+          {% endfor %}
+
+          {% if color_option_index != nil %}
+            <div class="color-variants">
+              {% assign used_colors = '' %}
+              {% for variant in product.variants %}
+                {% assign color_value = variant.options[color_option_index] %}
+                {% unless used_colors contains color_value %}
+                  {% assign used_colors = used_colors | append: color_value | append: ',' %}
+                  {% if variant.featured_media %}
+                    <button 
+                      class="color-swatch"
+                      data-image="{{ variant.featured_media | image_url: width: 800 }}"
+                      style="background-color: {{ color_value | downcase }};"
+                      aria-label="{{ color_value }}"
+                    ></button>
+                  {% endif %}
+                {% endunless %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
         </div>
       {% endfor %}
     </div>
@@ -79,6 +107,7 @@
   text-align: center;
   font-size: 28px;
   font-weight: bold;
+  font-family: var(--font-heading-family);
   margin-bottom: 20px;
 }
 
@@ -91,7 +120,7 @@
 }
 
 .new-arrived .grid--4 .product-card {
-  width: calc(20% - 20px);
+  width: calc(25% - 20px);
   box-sizing: border-box;
 }
 
@@ -140,6 +169,31 @@
   z-index: 10;
 }
 
+.color-variants {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: center;
+}
+
+.color-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, border 0.2s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.active {
+  border: 2px solid black;
+}
+
 @media (max-width: 749px) {
   .new-arrived .grid {
     flex-wrap: wrap;
@@ -153,3 +207,18 @@
   }
 }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".color-swatch").forEach(button => {
+    button.addEventListener("click", function() {
+      const productCard = this.closest(".product-card");
+      const img = productCard.querySelector(".product-image");
+      productCard.querySelectorAll(".color-swatch").forEach(btn => btn.classList.remove("active"));
+      this.classList.add("active");
+      const newImage = this.getAttribute("data-image");
+      if (newImage && img) img.src = newImage;
+    });
+  });
+});
+</script>
