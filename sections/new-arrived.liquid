@@ -23,7 +23,13 @@
       "type": "color",
       "id": "price_color",
       "label": "Price color",
-      "default": "#1F727C"
+      "default": "#ff0000"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable mobile slider",
+      "default": true
     }
   ],
   "presets": [
@@ -41,7 +47,7 @@
 
     {% assign products = section.settings.new_collection.products | limit: 8 %}
 
-    <div class="grid grid--4">
+    <div class="grid grid--4 {% if section.settings.enable_slider %}slider-enabled{% endif %}">
       {% for product in products %}
         <div class="product-card">
           {% if product.metafields.custom.new_label %}
@@ -57,16 +63,10 @@
             >
           </a>
 
-          <!-- Назва колекції -->
           <p class="collection-title">{{ section.settings.new_collection.title }}</p>
-
-          <!-- Назва товару -->
           <h4 class="product-title">{{ product.title }}</h4>
-
-          <!-- Ціна -->
           <p class="product-price">{{ product.price | money }}</p>
 
-          <!-- Кольори під ціною -->
           {% assign color_option_index = nil %}
           {% for option in product.options %}
             {% if option contains 'Color' or option contains 'Colour' or option contains 'Колір' %}
@@ -160,7 +160,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #1F727C;
+  background-color: #ff0000;
   color: #fff;
   font-size: 12px;
   font-weight: bold;
@@ -194,22 +194,43 @@
   border: 2px solid black;
 }
 
+/* Mobile 2x2 grid & optional slider */
+/* Mobile 2x2 grid & optional slider */
 @media (max-width: 749px) {
-  .new-arrived .grid {
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+  .new-arrived .grid.slider-enabled {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-left: 16px; /* відступ від краю */
+    scroll-padding-left: 16px;
+    gap: 16px;
   }
 
-  .new-arrived .grid--4 .product-card {
-    flex: 0 0 45%;
-    width: auto;
+  .new-arrived .grid.slider-enabled .product-card {
+    flex: 0 0 calc(50% - 8px); /* половина екрану мінус половина gap */
+    scroll-snap-align: start;
+  }
+
+  .new-arrived .grid.slider-enabled .product-card:first-child {
+    margin-left: 0; /* перший товар від краю */
+  }
+
+  /* Приховуємо скроллбар */
+  .new-arrived .grid.slider-enabled::-webkit-scrollbar {
+    display: none;
+  }
+  .new-arrived .grid.slider-enabled {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  // Кольори
   document.querySelectorAll(".color-swatch").forEach(button => {
     button.addEventListener("click", function() {
       const productCard = this.closest(".product-card");
@@ -220,5 +241,46 @@ document.addEventListener("DOMContentLoaded", function() {
       if (newImage && img) img.src = newImage;
     });
   });
+
+  // Slider only if enabled
+  if({{ section.settings.enable_slider | json }}) {
+    const sliders = document.querySelectorAll(".new-arrived .grid.slider-enabled");
+    sliders.forEach(slider => {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener("mousedown", (e) => {
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+
+      slider.addEventListener("mouseleave", () => { isDown = false; });
+      slider.addEventListener("mouseup", () => { isDown = false; });
+      slider.addEventListener("mousemove", (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+
+      // Touch support
+      let startTouchX = 0;
+      let touchScrollLeft = 0;
+
+      slider.addEventListener("touchstart", e => {
+        startTouchX = e.touches[0].pageX - slider.offsetLeft;
+        touchScrollLeft = slider.scrollLeft;
+      });
+
+      slider.addEventListener("touchmove", e => {
+        const x = e.touches[0].pageX - slider.offsetLeft;
+        const walk = (x - startTouchX) * 2;
+        slider.scrollLeft = touchScrollLeft - walk;
+      });
+    });
+  }
 });
 </script>
